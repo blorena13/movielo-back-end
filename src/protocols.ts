@@ -12,6 +12,6 @@ export type UserType = {
 }
 
 export type SessionType = {
-    userId: number;
-    token: string;
+    email: string;
+    password: string;
 }
