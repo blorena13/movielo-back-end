@@ -3,12 +3,15 @@ import express, {Express} from 'express';
 import { connectDb, disconnectDB, loadEnv } from './config';
 import { handleApplicationErrors } from './middlewares';
 import { userRouter } from './routers';
+import cors from "cors";
+
 
 loadEnv();
 
 const app = express();
 
 app
+.use(cors())
 .use(express.json())
 .get('/health', (_req, res) => res.send("I'm alive!"))
 .use('/', userRouter)
