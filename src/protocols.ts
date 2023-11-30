@@ -8,7 +8,6 @@ export type UserType = {
     profileImage: string;
     name: string;
     username: string;
-    password: string;
 }
 
 export type SessionType = {

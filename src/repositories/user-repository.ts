@@ -1,14 +1,14 @@
 import { prisma } from "../config";
 import { SessionType, UserType } from "../protocols";
 
-async function createUser(body: UserType) {
+async function createUser(body: UserType, password: string) {
     return await prisma.user.create({
         data: {
             email: body.email,
             profileImage: body.profileImage,
             name: body.name,
             username: body.username,
-            password: body.password
+            password
         }
     });
 }

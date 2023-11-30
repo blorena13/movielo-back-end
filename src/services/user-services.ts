@@ -6,8 +6,8 @@ import userRepository from "../repositories/user-repository";
 import { notFoundError } from '../errors';
 import { invalidCredentialsError } from '../errors';
 
-async function createUser(body: UserType) {
-    if (!body.email || !body.profileImage || !body.name || !body.username || !body.password) {
+async function createUser(body: UserType, password: string) {
+    if (!body.email || !body.profileImage || !body.name || !body.username || !password) {
         throw badRequestError();
     }
     const existsEmail = await userRepository.getByEmail(body.email);
@@ -18,10 +18,11 @@ async function createUser(body: UserType) {
     if(existsUsername){
         throw badRequestError("Username already exists!");
     }
-    return await userRepository.createUser(body);
+    const hashedPassword = await bcrypt.hash(password, 12);
+    return await userRepository.createUser(body, hashedPassword);
 }
 
-async function createSession(body: SessionType, userId: number) {
+async function createSession(body: SessionType) {
     if (!body.email || !body.password) {
         throw badRequestError();
     }
@@ -32,6 +33,7 @@ async function createSession(body: SessionType, userId: number) {
     }
 
     await validatePasswordOrFail(body.password, user.password);
+    const userId = user.id;
     
     const token = jwt.sign({ userId }, process.env.JWT_SECRET);
     return await userRepository.createSession(token, userId);
