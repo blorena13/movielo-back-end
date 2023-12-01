@@ -36,7 +36,11 @@ async function createSession(body: SessionType) {
     const userId = user.id;
     
     const token = jwt.sign({ userId }, process.env.JWT_SECRET);
-    return await userRepository.createSession(token, userId);
+    const session = await userRepository.createSession(token, userId);
+    const result = {
+        ...session, profileImage: user.profileImage, username: user.username
+    }
+    return result;
 }
 
 async function validatePasswordOrFail(password: string, userPassword: string) {

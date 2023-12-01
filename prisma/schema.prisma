@@ -19,12 +19,12 @@ model User {
   password     String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  Session      Session?
+  Session      Session[]
 }
 
 model Session {
   id        Int      @id @default(autoincrement())
-  userId    Int      @unique
+  userId    Int      
   User      User     @relation(fields: [userId], references: [id])
   token     String
   createdAt DateTime @default(now())

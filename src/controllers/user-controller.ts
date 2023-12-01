@@ -32,7 +32,7 @@ async function createSession(req: Request, res: Response) {
             return res.status(httpStatus.CONFLICT).send(err.message)
         }
 
-        return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err.message);
     }
 }
 
